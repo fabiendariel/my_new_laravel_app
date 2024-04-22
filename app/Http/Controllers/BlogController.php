@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BlogFilterRequest;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Http\RedirectResponse;
@@ -12,18 +13,16 @@ class BlogController extends Controller
 {
     
     public function index(): View
-    {
-        $posts = Post::paginate(1);
+    {        
         return view('blog.index', [
-            'posts' => \App\Models\Post::paginate(1)
+            'posts' => Post::paginate(1)
         ]);
     }
 
-    public function show(string $slug, int $id): RedirectResponse | View
+    public function show(string $slug, Post $post): RedirectResponse | View
     {
-        $post = \App\Models\Post::findOrFail($id);
         if ($post->slug !== $slug) {
-            return to_route('blog.show', ['slug' => $post->slug, 'id' => $id]);
+            return to_route('blog.show', ['slug' => $post->slug, 'post' => $post]);
         }
         return view('blog.show', [
             'post' => $post
