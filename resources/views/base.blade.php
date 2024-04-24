@@ -31,6 +31,9 @@
           <li class="nav-item">
             <a @class(['nav-link', 'active' => Str::startsWith($route, 'blog.index')]) aria-current="page" href="{{ route('blog.index') }}">Accueil</a>
           </li>
+          <li class="nav-item">
+            <a @class(['nav-link', 'active' => Str::startsWith($route, 'blog.create')]) aria-current="page" href="{{ route('blog.create') }}">Ajouter</a>
+          </li>
         </ul>
         <form class="d-flex" role="search">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -40,6 +43,11 @@
     </div>
   </nav>
   <div class="container">
+    @if (@session('success'))
+      <div class="alert alert-success">
+        {{ session('success') }}
+      </div>    
+    @endif
     @yield('content')
   </div>
 </body>
