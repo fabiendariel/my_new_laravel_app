@@ -10,14 +10,26 @@
   </div>
   <div class="form-group mb-3">
     <label for="slug" class="form-label">Slug</label>
-    <input type="text" class="form-control" name="slug" value="{{ old('slug', $post->slug) }}">
+    <input type="text" class="form-control" id="slug" name="slug" value="{{ old('slug', $post->slug) }}">
     @error("slug")
       {{ $message }}
     @enderror
   </div>
   <div class="form-group mb-3">
+    <label for="category" class="form-label">Catégorie</label>
+    <select class="form-control" id="category" name="category_id">
+      <option value="">---</option>
+      @foreach ($categories as $category)
+        <option @selected(old('category_id', $post->category_id) == $category->id) value="{{ $category->id }}">{{ $category->name }}</option>
+      @endforeach
+    </select>
+    @error("category_id")
+      {{ $message }}
+    @enderror
+  </div>
+  <div class="form-group mb-3">
     <label for="content" class="form-label">Contenu</label>
-    <textarea class="form-control" name="content">{{ old('content', $post->content) }}</textarea>
+    <textarea class="form-control" id="content" name="content">{{ old('content', $post->content) }}</textarea>
     @error("content")
       {{ $message }}
     @enderror

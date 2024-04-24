@@ -16,13 +16,42 @@ class BlogController extends Controller
     
     public function index(): View
     {        
-        $posts = Post::with('category')->get();
-        foreach($posts as $post){
-            $category = $post->category?->name;
-        }        
         
+        $post = Post::find(5);
+
+// Eloquent Relationships
+        // On créé une catégorie et on l'affecte au post en cours
+        // $category = $post->category()->create([
+        //     'name' => 'Categorie 1'
+        // ]);
+
+        // On affecte la categorie en cours au post en cours
+        // $post->category()->associate($category);
+        
+        // On créé des tags
+        // $post->tags()->createMany([[
+        //     'name' => 'Tag 1'
+        // ],[
+        //     'name' => 'Tag 2'
+        // ]]);
+        
+        // Retirer un tag
+        // $post->tags()->detach(2);
+        
+        // Update de la liste des tags
+        // $post->tags()->sync([1,2]);
+        
+        // On récupère les posts de la catégories dont l'id de post > à 4
+        // $category->posts()->where('id','>','4')->get();  
+
+        // $post->save();
+
+        // Retourne tous les posts ayant au moins un tag
+        // $posts = Post::has('tags', '>=', 1)->get();
+
+        // dd($posts);
         return view('blog.index', [
-            'posts' => Post::paginate(4)
+            'posts' => Post::with('tags', 'category')->paginate(10)
         ]);
     }
 
@@ -30,7 +59,8 @@ class BlogController extends Controller
     {
         $post = new Post();
         return view('blog.create', [
-            'post' => $post
+            'post' => $post,
+            'categories' => Category::select('id', 'name')->get()
         ]);
     }
 
@@ -44,7 +74,8 @@ class BlogController extends Controller
     public function edit(Post $post): View
     {
         return view('blog.edit', [
-            'post' => $post
+            'post' => $post,
+            'categories' => Category::select('id', 'name')->get()
         ]);
     }
 
